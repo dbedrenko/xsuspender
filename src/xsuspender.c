@@ -160,7 +160,7 @@ xsus_window_suspend (WnckWindow *window)
 int
 xsus_init ()
 {
-    g_debug ("Initializing.");
+    g_debug ("Initializing@@@@@@@@.");
 
     // Nowadays common to have a single screen which combines several physical
     // monitors. So it's ok to take the default. See:

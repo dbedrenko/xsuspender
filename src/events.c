@@ -13,7 +13,18 @@
 void
 xsus_init_event_handlers ()
 {
+    g_debug ("8888888 wnck_screen_get_default():");
+    g_debug (wnck_screen_get_default ());
     WnckScreen *screen = wnck_screen_get_default ();
+    g_debug (screen);
+    
+    if (wnck_screen_get(0)) {
+        g_debug("@@@@@@ screen 0 found");
+    }
+    if (wnck_screen_get(1)) {
+        g_debug("@@@@@@ screen 1 found");
+    }
+
 
     g_signal_connect (screen, "active-window-changed",
                       G_CALLBACK (on_active_window_changed), NULL);
@@ -59,9 +70,12 @@ gboolean
 windows_are_same_process (WnckWindow *w1,
                           WnckWindow *w2)
 {
+
+    g_debug ("55555 entered windows_are_same_process()");
     // Consider windows to be of the same process when they
     // are one and the same window,
     if (w1 == w2)
+        g_debug ("666666 w1 == w2");
         return TRUE;
 
     // Or when they have the same PID, map to the same rule,
@@ -80,6 +94,7 @@ void
 on_active_window_changed (WnckScreen *screen,
                           WnckWindow *prev_active_window)
 {
+    g_debug ("1111 entered on_active_window_changed()");
     WnckWindow *active_window = wnck_screen_get_active_window (screen);
 
     active_window = get_main_window (active_window);
@@ -87,15 +102,19 @@ on_active_window_changed (WnckScreen *screen,
 
     // Main windows are one and the same; do nothing
     if (windows_are_same_process (active_window, prev_active_window))
+        g_debug ("222222 windows_are_same_process() evaluated to true");
         return;
 
     // Resume the active window if it was (to be) suspended
     if (active_window)
+        g_debug ("333333 inside 'Resume the active window if it was (to be) suspended'");
         xsus_window_resume (active_window);
 
     // Maybe suspend previously active window
     if (prev_active_window)
+        g_debug ("444444 inside '// Maybe suspend previously active window'");
         xsus_window_suspend (prev_active_window);
+    g_debug ("66666 returning from on_active_window_changed()");
 }
 
 
